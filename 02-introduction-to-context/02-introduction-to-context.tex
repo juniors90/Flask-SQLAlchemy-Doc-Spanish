@@ -1,0 +1,231 @@
+%%
+%% This is file `02-introduction-to-context.tex', based on 'ECSthesis.cls', by Steve R. Gunn
+%% generated with the docstrip utility.
+%%
+%% Created by Steve R. Gunn, modified by Sunil Patel: www.sunilpatel.co.uk
+\documentclass[10pt,letterpaper,notumble]{leaflet}
+
+\input{../00-base/00-base} % Experiment 1
+
+\begin{document}
+    \mbox{}
+    \thispagestyle{empty}% Keine Seitenzahlen 
+    
+    \clearpage %page 2
+    
+    \makebox[\linewidth][l]{
+    	\begin{minipage}{1.6\linewidth}
+                \begin{description}
+                	
+                	\item[\texttt{SQLALCHEMY\_POOL\_TIMEOUT}:]
+                	Especifica el tiempo de espera de la conexión en segundos para el grupo.
+                	
+                	\textbf{En desuso} a partir de la \texttt{v2.4} y se eliminará en la \texttt{v3.0.}
+                	
+                	\item[\texttt{SQLALCHEMY\_POOL\_RECYCLE}:]
+                	Número de segundos después de los cuales una conexión se recicla automáticamente. Esto es necesario para \texttt{MySQL}, que elimina las conexiones después de $8$ horas inactivo de forma predeterminada. Tenga en cuenta que \texttt{Flask-SQLAlchemy} lo establece automáticamente en $2$ horas si se usa \texttt{MySQL}. Algunos backends pueden usar un valor de tiempo de espera predeterminado diferente. Para obtener más información sobre los tiempos de espera, consulte Tiempos de espera 
+                	
+                	\textbf{En desuso} a partir de la \texttt{v2.4} y se eliminará en la \texttt{v3.0.}
+                	\item[\texttt{SQLALCHEMY\_MAX\_OVERFLOW}:]
+                	Controla la cantidad de conexiones que se pueden crear después de que el grupo alcanza su tamaño máximo. Cuando esas conexiones adicionales se devuelven al grupo, se desconectan y descartan. 
+                	
+                	\textbf{En desuso} a partir de la \texttt{v2.4} y se eliminará en la \texttt{v3.0.}
+                	\item[\texttt{SQLALCHEMY\_TRACK\_MODIFICATIONS}:]
+                	Si se establece en \texttt{True}, \texttt{Flask-SQLAlchemy} rastreará las modificaciones de los objetos y emitirá señales. El valor predeterminado es \texttt{None}, que habilita el seguimiento, pero emite una advertencia de que estará deshabilitado de manera predeterminada en el futuro. Esto requiere memoria adicional y debe desactivarse si no es necesario.
+                	\item[\texttt{SQLALCHEMY\_ENGINE\_OPTIONS}:]
+                	Un diccionario de argumentos de palabras clave para enviar \texttt{create\_engine()}. Consulte también \texttt{engine\_options} en \texttt{SQLAlchemy}.
+                \end{description}
+            \textit{Nuevo en la versión 0.8}: Las \texttt{SQLALCHEMY\_NATIVE\_UNICODE}, \texttt{SQLALCHEMY\_POOL\_SIZE}, \texttt{SQLALCHEMY\_POOL\_TIMEOUT} y \texttt{SQLALCHEMY\_POOL\_RECYCLE} se añadieron claves de configuración.
+            
+            \textit{Nuevo en la versión 0.12}: Se \textit{SQLALCHEMY\_BINDSagregó} la clave de configuración.
+            
+            \textit{Nuevo en la versión 0.17}: El \textit{SQLALCHEMY\_MAX\_OVERFLOW} se añadió clave de configuración.
+            
+            \textit{Nuevo en la versión 2.0}: El \textit{SQLALCHEMY\_TRACK\_MODIFICATIONS} se añadió clave de configuración.
+            
+            \textit{Modificado en la versión 2.1}: \textit{SQLALCHEMY\_TRACK\_MODIFICATIONS} avisará si no se configura.
+            
+            \textit{Modificado en la versión 2.4}:
+            
+            * \texttt{SQLALCHEMY\_ENGINE\_OPTIONS} Se agregó la clave de configuración. * Claves obsoletas
+            
+            \begin{itemize}
+            	\item[$\bullet$] \texttt{SQLALCHEMY\_NATIVE\_UNICODE}
+            	
+            	\item[$\bullet$] \texttt{SQLALCHEMY\_POOL\_SIZE}
+            	
+            	\item[$\bullet$] \texttt{SQLALCHEMY\_POOL\_TIMEOUT}
+            	
+            	\item[$\bullet$] \texttt{SQLALCHEMY\_POOL\_RECYCLE}
+            	
+            	\item[$\bullet$] \texttt{SQLALCHEMY\_MAX\_OVERFLOW}
+            \end{itemize}
+            
+            \textit{Modificado en la versión 2.4.3}: obsoleto \texttt{SQLALCHEMY\_COMMIT\_ON\_TEARDOWN}.
+            
+        \end{minipage}
+    
+    }
+    
+    \clearpage %page 3
+    {\hspace{4cm}
+    \makebox[\linewidth][l]{
+    	\begin{minipage}{1.6\linewidth}
+    		
+    		\section{Formato de URI de conexión} 
+    		
+    		Para obtener una lista completa de los \texttt{URI} de conexión, consulte la documentación de \texttt{SQLAlchemy} en (Bases de datos compatibles). Aquí se muestran algunas cadenas de conexión comunes.
+    		
+    \texttt{SQLAlchemy} indica el origen de un motor como un \texttt{URI} combinado con argumentos de palabras clave opcionales para especificar opciones para el motor. La forma del \texttt{URI} es:
+    
+    \texttt{dialect+driver://username:password@host:port/my\_db}
+    
+    Muchas de las partes de la cadena son opcionales. Si no se especifica ningún controlador, se selecciona el predeterminado (asegúrese de no incluirlo +en ese caso).
+    
+    \textbf{Postgres}: \texttt{postgresql://scott:tiger@localhost/mydatabase}
+    
+    \textbf{MySQL}: \texttt{mysql://scott:tiger@localhost/mydatabase}
+    
+    \textbf{Oracle}: \texttt{oracle://scott:tiger@127.0.0.1:1521/sidname}
+    
+    \textbf{SQLite} (Aquí aplicamos las convenciones según el \texttt{OS}):
+%    \vspace*{-0.5cm}
+    	\begin{itemize}
+    		\item \#Unix/Mac (note the four leading slashes)
+    		
+    		\texttt{sqlite:////absolute/path/to/foo.db}
+    		
+    		\item \#Windows (note 3 leading forward slashes and  escapes)
+    		
+    		\texttt{sqlite:///C:{$\backslash\backslash$}absolute{$\backslash\backslash$}path{$\backslash\backslash$}to{$\backslash\backslash$}foo.db}
+    		
+    		\item \#Windows (alternative using raw string)
+    		
+    		\texttt{r'sqlite:///C:{$\backslash$}absolute{$\backslash$}path{$\backslash$}to{$\backslash$}foo.db }
+    	\end{itemize}
+    
+        \section{Uso de convenciones de nomenclatura y metadatos personalizados}
+        
+        Opcionalmente, puede construir el objeto \texttt{SQLAlchemy} con un objeto \texttt{MetaData} personalizado . Esto le permite, entre otras cosas, especificar una convención de nomenclatura de restricción personalizada junto con \texttt{SQLAlchemy 0.9.2} o superior. Hacerlo es importante para lidiar con las migraciones de bases de datos (por ejemplo, usando alambique como se indica aquí . Aquí hay un ejemplo, como lo sugieren los documentos de \texttt{SQLAlchemy}:
+        
+        \lstset{inputencoding=utf8/latin1,
+        	frame=lines,
+        	label={lst:code_direct},
+        	basicstyle=\footnotesize,
+        	showstringspaces=false  
+        }
+        \lstinputlisting[language=Python,
+        firstline=24,
+        lastline=37]{../python/02-introduction-to-context.py}
+        
+        Para obtener más información \texttt{MetaData}, consulte los documentos oficiales al respecto.
+    
+    \end{minipage}
+
+    }}
+    
+    \clearpage % end the column
+    
+    \mbox{}
+    
+    \clearpage % end the spanned column
+    
+    \maketitle
+    \begin{abstract}
+    	Si pensamos en utilizar una sola aplicación, podemos saltar este capítulo. Simplemente pasemos nuestra aplicación al constructor \texttt{SQLAlchemy} y estará listo. Sin embargo, si deseamos utilizar más de una aplicación o crear la aplicación dinámicamente en una función, debemos seguir leyendo.
+    \end{abstract}
+
+    \section{Introducción a los contextos}
+    
+    Si definimos la aplicación en una función, pero el objeto \texttt{SQLAlchemy} globalmente, \textit{¿cómo aprende este último sobre el primero?}. La respuesta es la función \texttt{init\_app()}:
+    
+    \lstset{inputencoding=utf8/latin1,
+    	frame=lines,
+    	label={lst:code_direct},
+    	basicstyle=\footnotesize,
+    	showstringspaces=false  
+    }
+    \lstinputlisting[language=Python, firstline=1,lastline=9]{../python/02-introduction-to-context.py}
+    
+    Lo que hace es preparar la aplicación para trabajar \texttt{SQLAlchemy}. Sin embargo, eso no vincula ahora el objeto \texttt{SQLAlchemy} a su aplicación. ¿Por qué no hace eso? Porque puede haber más de una aplicación creada.
+    
+    Entonces, ¿cómo \texttt{SQLAlchemy} se entera de su aplicación? Tendrá que configurar un contexto de aplicación. Si está trabajando dentro de una función de vista \textit{Flask} o un comando CLI, eso sucede automáticamente. Sin embargo, si está trabajando dentro del shell interactivo, tendrá que hacerlo usted mismo (consulte Creación de un contexto de aplicación).
+    
+    \thispagestyle{empty}
+    
+    \clearpage
+    \makebox[\linewidth][l]{
+    	\begin{minipage}{2.2\linewidth}
+    
+            Si intentamos realizar operaciones de base de datos fuera del contexto de una aplicación, verá el siguiente error:
+    
+            \texttt{\textcolor{red}{No application found. Either work inside a view function or push an application context.}}
+    
+            En pocas palabras, haz algo como esto:
+    
+            \lstset{inputencoding=utf8/latin1,
+            	frame=lines,
+            	label={lst:code_direct},
+            	basicstyle=\footnotesize,
+            	showstringspaces=false  
+            }
+            \lstinputlisting[language=Python,
+                firstline=11,
+                lastline=13]{../python/02-introduction-to-context.py}
+    
+            Alternativamente, use la declaración with para encargarse de \texttt{setup} y \texttt{teardown}:
+    
+            \lstinputlisting[language=Python,firstline=15,lastline=19]{../python/02-introduction-to-context.py}
+    
+            Algunas funciones dentro de \texttt{Flask-SQLAlchemy} también aceptan opcionalmente la aplicación para operar:
+    
+            \lstinputlisting[language=Python,firstline=21,lastline=22]{../python/02-introduction-to-context.py}
+            
+            \vspace*{-0.5cm}
+            
+            \section{Configuración}
+            
+            Existen los siguientes valores de configuración para \texttt{Flask-SQLAlchemy}. \texttt{Flask-SQLAlchemy} carga estos valores de su configuración principal de Flask que se puede completar de varias formas. Tenga en cuenta que algunos de ellos no se pueden modificar después de que se creó el motor, así que asegúrese de configurarlos lo antes posible y de no modificarlos en tiempo de ejecución.
+            
+            \vspace*{-0.25cm}
+            
+            \subsection{Claves de configuración}
+             
+            Una lista de claves de configuración que la extensión comprende actualmente
+            
+            \begin{description}
+            	
+            	\item[\texttt{SQLALCHEMY\_DATABASE\_URI}:]
+            	El \texttt{URI} de la base de datos que debemos usar para la conexión. Ejemplos:
+            	\begin{itemize}
+            		\item \texttt{sqlite:////tmp/test.db}
+            		
+            		\item \texttt{mysql://username:password@server/db}
+            	\end{itemize} 
+            
+            	\item[\texttt{SQLALCHEMY\_BINDS}:]
+            	Un diccionario que asigna claves de enlace a \texttt{URI} de conexión \texttt{SQLAlchemy}. Para obtener más información, consulte sobre \href{https://flask-sqlalchemy.palletsprojects.com/en/2.x/binds/#binds}{Varias bases de datos}.
+            	 
+            	\item[\texttt{SQLALCHEMY\_ECHO}:] 
+            	Si se establece en \texttt{True}, \texttt{SQLAlchemy} registrará todas las declaraciones emitidas a \texttt{stderr} que pueden ser útiles para la depuración.
+            	
+            	\item[\texttt{SQLALCHEMY\_RECORD\_QUERIES}:] 
+            	Puede usarse para deshabilitar o habilitar explícitamente la grabación de consultas. La grabación de consultas ocurre automáticamente en modo de depuración o prueba. Consulte \texttt{get\_debug\_queries()} para obtener más información.
+            	
+            	\item[\texttt{SQLALCHEMY\_NATIVE\_UNICODE}:]
+            	Se puede utilizar para deshabilitar explícitamente la compatibilidad con Unicode nativo. Esto es necesario para algunos adaptadores de base de datos (como \texttt{PostgreSQL} en algunas versiones de \texttt{Ubuntu}) cuando se usa con valores predeterminados de base de datos incorrectos que especifican bases de datos sin codificación.
+            	
+            	\textbf{En desuso} a partir de la \texttt{v2.4} y se eliminará en la \texttt{v3.0.}
+            	
+            	\item[\texttt{SQLALCHEMY\_POOL\_SIZE}:]
+            	El tamaño del grupo de bases de datos. Por defecto es el motor por defecto (normalmente $5$).
+            	
+            	\textbf{En desuso} a partir de la \texttt{v2.4} y se eliminará en la \texttt{v3.0.}
+            	
+            \end{description}
+        
+        \end{minipage}
+    
+    }
+
+\end{document}

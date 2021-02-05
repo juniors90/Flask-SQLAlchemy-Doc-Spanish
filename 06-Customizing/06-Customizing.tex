@@ -1,0 +1,172 @@
+%%
+%% This is file `Thesis.cls', based on 'ECSthesis.cls', by Steve R. Gunn
+%% generated with the docstrip utility.
+%%
+%% Created by Steve R. Gunn, modified by Sunil Patel: www.sunilpatel.co.uk
+\documentclass[10pt,letterpaper,notumble]{leaflet}
+
+\input{../00-base/00-base} % Experiment 1
+
+\begin{document}
+	\mbox{}
+	\thispagestyle{empty}% Keine Seitenzahlen 
+	
+	\clearpage
+	\makebox[\linewidth][l]{
+		\begin{minipage}{1.65\linewidth}
+			
+			La operación es una de \texttt{'insert'}, \texttt{'update'} y \texttt{'delete'}.
+			
+			\textbf{\texttt{before\_models\_committed}:}
+			
+			Esta señal funciona exactamente igual \texttt{models\_committed} pero se emite antes de que se lleve a cabo la confirmación.
+			
+			\vspace*{-0.5cm}
+			
+			\section{Customizing}
+			
+			\texttt{Flask-SQLAlchemy} define valores predeterminados sensibles. Sin embargo, a veces se necesita personalización. Hay varias formas de personalizar cómo se definen e interactúan los modelos.
+			
+			Estas personalizaciones se aplican en la creación del \texttt{SQLAlchemy} objeto y se extienden a todos los modelos derivados de su clase \texttt{Model}.
+			
+			\textbf{Clase Model}
+			 
+			Todos los modelos de \texttt{SQLAlchemy} heredan de una clase base declarativa. Esto se expone como \texttt{db.Model} en \texttt{Flask-SQLAlchemy}, que amplían todos los modelos. Esto se puede personalizar subclasificando el predeterminado y pasando la clase personalizada a \texttt{model\_class}.
+			
+			El siguiente ejemplo le da a cada modelo una clave primaria entera o una clave externa para la herencia de tablas unidas.
+			
+			\textbf{Nota}: Las claves primarias enteras para todo no son necesariamente el mejor diseño de base de datos (eso depende de los requisitos de su proyecto), esto es solo un ejemplo.
+		    
+		    \lstset{inputencoding=utf8/latin1,
+		    	frame=lines,
+		    	label={lst:code_direct},
+		    	basicstyle=\footnotesize,
+		    	showstringspaces=false  
+		    }
+		    \lstinputlisting[language=Python,
+		    firstline=23,
+		    lastline=45]{../python/05-Multiple-Databases-with-Binds.py}
+		    
+		    \textbf{Model Mixins}
+		    
+		    Si el comportamiento solo es necesario en algunos modelos en lugar de en todos los modelos, usamos las clases mixin para personalizar solo esos modelos. Por ejemplo, si algunos modelos deben realizar un seguimiento de cuándo se crean o actualizan:
+		    
+		\end{minipage}
+		
+	}
+	\clearpage % end the column
+	{\hspace{4.5cm}
+	\makebox[\linewidth][l]{
+		\begin{minipage}{1.65\linewidth}
+			\lstset{inputencoding=utf8/latin1,
+				frame=lines,
+				label={lst:code_direct},
+				basicstyle=\footnotesize,
+				showstringspaces=false  
+			}
+			\lstinputlisting[language=Python,firstline=47,lastline=58]{../python/05-Multiple-Databases-with-Binds.py}
+			
+			\vspace*{-0.5cm}
+			
+			\section{Clase Query}
+			También es posible personalizar lo que está disponible para su uso en la propiedad especial \texttt{query} de los modelos. Por ejemplo, proporcionando un método \texttt{get\_or}:
+			
+			\lstinputlisting[language=Python,firstline=60,lastline=69]{../python/05-Multiple-Databases-with-Binds.py}
+			
+			Y ahora todas las consultas ejecutadas desde la propiedad especial \texttt{query} en los modelos \texttt{Flask-SQLAlchemy} podemos usar el método \texttt{get\_or} como parte de sus consultas. Todas las relaciones definidas con \texttt{db.relationship} (pero no \texttt{sqlalchemy.orm.relationship()}) también se proporcionarán con esta funcionalidad.
+			
+			También es posible definir una clase de consulta personalizada para relaciones individuales, proporcionando la palabra clave \texttt{query\_class} en la definición. Esto funciona con ambos \texttt{db.relationship} y \texttt{sqlalchemy.relationship}:
+			
+			\lstinputlisting[language=Python,firstline=71,lastline=72]{../python/05-Multiple-Databases-with-Binds.py}
+			
+			\textbf{Nota}: Si una clase de consulta se define en una relación, tendrá prioridad sobre la clase de consulta adjunta a su modelo correspondiente.
+			
+			También es posible definir una clase de consulta específica para modelos individuales anulando el atributo \texttt{query\_class} de clase en el modelo:
+			
+			\lstinputlisting[language=Python,firstline=74,lastline=75]{../python/05-Multiple-Databases-with-Binds.py}
+			
+			En este caso, el método \texttt{get\_or} solo estará disponible en consultas que se originen en \texttt{MyModel.query}.
+		\end{minipage}
+	}}
+	\mbox{}
+	\clearpage
+	
+	\mbox{}
+	
+	\clearpage % end the spanned column
+	
+	\maketitle
+	
+	\begin{abstract}
+		A partir de \texttt{Flask-SQLAlchemy 0.12} puede conectarse fácilmente a múltiples bases de datos. Para lograrlo, preconfigura \texttt{SQLAlchemy} para que admita múltiples ``enlaces''.
+		
+		¿Qué son las ataduras?. En \texttt{SQLAlchemy}, un enlace es algo que puede ejecutar sentencias \texttt{SQL} y generalmente es una conexión o un motor. En \texttt{Flask-SQLAlchemy}, los enlaces son siempre motores que se crean automáticamente entre bastidores. Luego, cada uno de estos motores se asocia con una clave corta (la clave de enlace). Esta clave se usa luego en el momento de la declaración del modelo para asociar un modelo con un motor específico.
+		
+		Si no se especifica ninguna clave de enlace para un modelo, se utiliza la conexión predeterminada en su lugar (según la configuración de \texttt{SQLALCHEMY\_DATABASE\_URI}).
+	\end{abstract}
+
+	\vspace*{-0.4cm}
+	
+	\section{Configuración de ejemplo}
+	
+	La siguiente configuración declara tres conexiones de base de datos. El predeterminado especial, así como otros dos usuarios con nombre (para los usuarios) y \texttt{appmeta} (que se conecta a una base de datos \texttt{sqlite} para acceso de solo lectura a algunos datos que la aplicación proporciona internamente):
+	
+	\thispagestyle{empty}
+	
+	\clearpage
+	\makebox[\linewidth][l]{
+		\begin{minipage}{2.2\linewidth} 
+				
+			\lstset{inputencoding=utf8/latin1,
+				frame=lines,
+				label={lst:code_direct},
+				basicstyle=\footnotesize,
+				showstringspaces=false  
+			}
+			\lstinputlisting[language=Python,firstline=1,lastline=5]{../python/05-Multiple-Databases-with-Binds.py}
+			
+			\vspace*{-0.4cm}
+			
+			\section{Creación y eliminación de tablas}
+			
+			Los métodos \texttt{create\_all()} y \texttt{drop\_all()} de forma predeterminada operan en todos los enlaces declarados, incluido el predeterminado. Este comportamiento se puede personalizar proporcionando el parámetro de vinculación. Se necesita un solo nombre de enlace, \texttt{'\_\_all\_\_'} para hacer referencia a todos los enlaces o una lista de enlaces. El bind (\texttt{SQLALCHEMY\_DATABASE\_URI}) predeterminado se llama \texttt{None}:
+			
+			\lstinputlisting[language=Python, firstline=7,lastline=10]{../python/05-Multiple-Databases-with-Binds.py}
+			
+			\vspace*{-0.4cm}
+		
+		    \section{Refiriéndose a Binds}
+		    
+		    Si declara un modelo, puede especificar el enlace que se utilizará con el atributo \texttt{\_\_bind\_key\_\_}:
+		    
+		    \lstinputlisting[language=Python,firstline=12,lastline=15]{../python/05-Multiple-Databases-with-Binds.py}
+		    
+		    Internamente, la clave de vinculación se almacena en el diccionario de información de la tabla como \texttt{'bind\_key'}. Es importante saber esto porque cuando desee crear un objeto de tabla directamente, tendrá que ponerlo allí:
+		    
+		    \lstinputlisting[language=Python, firstline=17, lastline=21]{../python/05-Multiple-Databases-with-Binds.py}
+		    
+		    Si especificó \texttt{\_\_bind\_key\_\_} en sus modelos, puede usarlos exactamente como está acostumbrado. El modelo se conecta a la propia conexión de base de datos especificada.
+		    
+		    \vspace*{-0.4cm}
+		    
+		    \section{Soporte de señalización}
+		    
+		    Nos conectamos a las siguientes señales para recibir notificaciones antes y después de que se confirmen los cambios en la base de datos. Estos cambios solo se controlan si \texttt{SQLALCHEMY\_TRACK\_MODIFICATIONS} están habilitados en la configuración.
+		    
+		    \textit{Nuevo en la versión 0.10}.
+		    
+		    \textit{Modificado en la versión 2.1}: \texttt{before\_models\_committed} se activa correctamente.
+		    
+		    \textbf{En desuso} desde la versión 2.1: esto estará deshabilitado de forma predeterminada en una versión futura.
+		    
+		    \textbf{\texttt{models\_committed}:}
+		    
+		    Esta señal se envía cuando los modelos modificados se envían a la base de datos.
+		    
+		    El remitente es la aplicación que emitió los cambios. Al receptor se le pasa el parámetro \texttt{changes} con una lista de tuplas en el formulario. (\texttt{model instance}, \texttt{operation}).
+		    
+		\end{minipage}
+		
+	}
+	
+\end{document}

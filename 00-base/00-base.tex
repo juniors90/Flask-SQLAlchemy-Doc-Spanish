@@ -1,0 +1,31 @@
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{listingsutf8}
+\usepackage[spanish]{babel}
+\usepackage{microtype}
+\usepackage{blindtext} 
+\usepackage{biolinum} 
+\renewcommand\rmdefault{\sfdefault}% Verwende serifenlose Schrift 
+\usepackage{mwe}% Dummy Bilder 
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{xcolor}
+	\definecolor{WildStrawberry}{rgb}{1.0, 0.26, 0.64}
+	\definecolor{wildstrawberry}{rgb}{1.0, 0.26, 0.64}
+	\definecolor{Mulberry}{rgb}{0.77, 0.29, 0.55}
+	\definecolor{LimeGreen}{rgb}{0.2, 0.8, 0.2}
+	\definecolor{LincolnGreen}{rgb}{0.11, 0.35, 0.02}
+	\definecolor{blue}{rgb}{0.0, 0.0, 1.0}
+	\definecolor{forestgreen(traditional)}{rgb}{0.0, 0.27, 0.13}
+\usepackage[colorlinks,citecolor=blue,urlcolor=blue]{hyperref}
+
+
+\AddToBackground{5}{\put(0,0){\textcolor{blue!5}{\rule{\paperwidth}{\paperheight}}}}%
+
+\AddToBackground{5}{% Fondo de la página pequeña 1
+	\put(\LenToUnit{0.05\paperwidth},\LenToUnit{0.875\paperheight}){\includegraphics[width=\LenToUnit{0.90\paperwidth},height=\LenToUnit{0.1\paperheight}]{../img/flask-sqlalchemy-title.png}}
+}
+
+\title{Quik Reference} 
+\author{Ferreira Juan David} 
+\date{\today}

@@ -1,0 +1,200 @@
+%%
+%% This is file `Thesis.cls', based on 'ECSthesis.cls', by Steve R. Gunn
+%% generated with the docstrip utility.
+%%
+%% Created by Steve R. Gunn, modified by Sunil Patel: www.sunilpatel.co.uk
+\documentclass[11pt,letterpaper,notumble]{leaflet}
+\input{../00-base/00-base} % Experiment 1
+\usepackage{float}
+\begin{document}
+    \mbox{}
+    \thispagestyle{empty}% Keine Seitenzahlen 
+    
+    \newpage %page 2
+    
+    \makebox[\linewidth][l]{
+    	\begin{minipage}{1.6\linewidth}
+    		    \hrule
+    		    \vspace{0.25cm}
+    		    \textbf{Compruebe los tipos con cuidado}
+    		    No realice comprobaciones de tipo o es instanciado en \textit{db.Table} , que emula el comportamiento de la tabla pero no es una clase. \texttt{db.Table} expone la interfaz \texttt{Table} , pero es una función que permite la omisión de metadatos.
+    		    \vspace{0.25cm}
+    		    \hrule
+    		    \vspace{0.25cm}
+    		
+    		    El parámetro \texttt{session\_option}, si se proporciona, es un diccionario de parámetros que se pasarán al constructor de la sesión. Consulte las opciones estándar de \texttt{Session}.
+    		    
+    		    \textit{Nuevo en la versión 0.10}:  La función \texttt{session\_options} fue añadida.
+    		    
+    		    \textit{Nuevo en la versión 0.16}: scopefunc ahora se acepta en \texttt{session\_options} . Permite especificar una función personalizada que definirá el alcance de la sesión SQLAlchemy.
+    		    
+    		    \textit{Nuevo en la versión 2.1}: Se agregó el parámetro de metadatos . Esto permite establecer convenciones de nomenclatura personalizadas, entre otras cosas no triviales.
+    		    
+    		    Se agregó el parámetro \texttt{query\_class} , para permitir la personalización de la clase de consulta, en lugar del predeterminado de \texttt{BaseQuery}.
+    		    
+    		    Se agregó el parámetro \texttt{model\_class}, que permite usar una clase de modelo personalizada en lugar de \texttt{Model}.
+    		    
+    		    \textit{Modificado en la versión 2.1}: utilice la misma clase de consulta en la sesión, \texttt{Model.query} y \texttt{Query}.
+    		    
+    		    \textit{Nuevo en la versión 2.4}: La función \texttt{engine\_options} fue añadida.
+    		    
+    		    \textit{Modificado en la versión 2.4}: el parámetro use\_native\_unicode quedó obsoleto.
+    		    
+    		    \textit{Modificado en la versión 2.4.3}: \texttt{COMMIT\_ON\_TEARDOWN} está en desuso y se eliminará en la \texttt{versión 3.1}. En su lugar, llame \texttt{db.session.commit()} directamente.
+    		    
+                \begin{description}
+                	
+                	\item[\texttt{Query = None}]
+
+                	Clase de consulta predeterminada utilizada por \texttt{Model.query} y otras consultas. Personaliza esto pasando \texttt{query\_class} a \texttt{SQLAlchemy()}. Por defecto es \texttt{BaseQuery}.
+                	
+                	
+                	\item[\texttt{apply\_driver\_hacks(app, sa\_url, options)}:]
+                	
+                	Este método se llama antes de la creación del motor y se utiliza para inyectar trucos específicos del controlador en las opciones. El parámetro de opciones es un diccionario de argumentos de palabras clave que luego se usará para llamar a la función \texttt{sqlalchemy.create\_engine()}.
+                	
+                	La implementación predeterminada proporciona algunos valores predeterminados más cuerdos para cosas como tamaños de grupo para \texttt{MySQL} y \texttt{sqlite}. También inyecta la configuración de \texttt{SQLALCHEMY\_NATIVE\_UNICODE}.
+                	
+                	\item[\texttt{create\_all( bind = '\_\_ all\_\_' , app = None )}:]
+                	Crea todas las tablas.
+                		
+                	\textit{Modificado en la versión 0.12}: se agregaron parámetros.
+                	\item[\texttt{create\_engine( sa\_url , engine\_opts )}] 
+                	Anule este método para tener la última palabra sobre cómo se crea el motor \texttt{SQLAlchemy}.
+                	
+                \end{description}
+           
+        \end{minipage}
+    
+    }
+    
+    \newpage %page 3
+    {\hspace{4cm}
+    \makebox[\linewidth][l]{
+    	\begin{minipage}{1.6\linewidth}
+    		
+    		
+    	\begin{description}
+    		
+    		\item[\mbox{}] En la mayoría de los casos, querrá usar la `\texttt{SQLALCHEMY\_ENGINE\_OPTIONS}' variable de configuración o establecer \texttt{engine\_options} para \texttt{SQLAlchemy()}.
+    		\item[\texttt{create\_scoped\_session( opciones = None )}:]
+    		 
+    		Cree un \textit{scoped\_session} en la factoría a partir de \texttt{create\_session()}.
+    		
+    		Se puede establecer una clave adicional `\texttt{scopefunc}' en el  diccionario \texttt{options} para especificar una función de alcance personalizada. Si no se proporciona, se utiliza la identidad de la pila de contexto de la aplicación de \texttt{Flask}. Esto asegurará que las sesiones se creen y eliminen con el ciclo de solicitud/respuesta, y debería estar bien en la mayoría de los casos.
+    		
+    		\textbf{Parámetros} $\Longrightarrow$ \textbf{opciones} - \textit{diccionario de argumentos de palabras claves pasado a la clase} \texttt{create\_session}.
+    		
+    		\item[\texttt{create\_session( options )}]
+    		Cree el método de factoría de sesiones utilizada por \texttt{create\_scoped\_session()}.
+    			
+    		El método de factoría debe devolver un objeto que SQLAlchemy reconoce como una sesión, o el registro de eventos de sesión puede generar una excepción.
+    			
+    		Los métodos de factoría válidas incluyen una clase \texttt{Session} o una \texttt{sessionmaker}.
+    			
+    		La implementación predeterminada creamos un \texttt{sessionmakerfor} \texttt{SignallingSession}.
+    			
+    		\textbf{Parámetros} $\Longrightarrow$  \textbf{opciones} - \textit{diccionario de argumentos de palabras claves pasado a la clase} \texttt{session}.
+    		
+    		\item[\texttt{drop\_all(bind='\_\_all\_\_', app=None)}:] Elimina todas las tablas.
+    		
+    		\textit{Modificado en la versión 0.12}: se agregaron parámetros.
+    		
+    		\item[\texttt{engine}:]
+    		Da acceso al motor. Si la configuración de la base de datos está vinculada a una aplicación específica (inicializada con una aplicación), esto siempre devolverá una conexión a la base de datos. Sin embargo, si se utiliza la aplicación actual, esto podría generar un error \texttt{RuntimeErro}r si no hay ninguna aplicación activa en este momento.
+    		
+    		\item[\texttt{get\_app(reference\_app = None)}:] 
+    		Método auxiliar que implementa la lógica para buscar una aplicación.
+    		
+    		\item[\texttt{get\_binds(app = None)}:] 
+    		Devuelve un diccionario con una tabla $\Longrightarrow$ mapeo del motor.
+    		
+    		Esto es adecuado para el uso de \texttt{sessionmaker(binds = db.get\_binds(app))}. 
+    		\item[\texttt{get\_engine(app=None, bind=None)}:] Devuelve un motor específico.
+    		
+    		
+    	\end{description}
+    		
+    \end{minipage}
+
+    }}
+    
+    \newpage % page 4
+    
+    \mbox{}
+    
+    \newpage % page 5
+    \maketitle
+    
+    \begin{abstract}
+    	Si pensamos en utilizar una sola aplicación, podemos saltar este capítulo. Simplemente pasemos nuestra aplicación al constructor \texttt{SQLAlchemy} y estará listo. Sin embargo, si deseamos utilizar más de una aplicación o crear la aplicación dinámicamente en una función, debemos seguir leyendo.
+    \end{abstract}
+
+    \vspace{2cm}
+    
+    \begin{center}
+    	\includegraphics[width=\textwidth]{../img/flask-sqlalchemy-logo.png}
+    \end{center}
+
+    \thispagestyle{empty}
+    
+    \newpage
+    
+    \makebox[\linewidth][l]{
+    	\begin{minipage}{2.2\linewidth}
+    		
+    		\section{API Reference: Configuración}
+            
+            \texttt{class flask\_sqlalchemy.SQLAlchemy(app=None, use\_native\_unicode=True, session\_options=None, metadata=None, query\_class=<class 'flask\_sqlalchemy.BaseQuery'>, model\_class=<class 'flask\_sqlalchemy.model.Model'>, engine\_options=None)}
+    
+            Esta clase se utiliza para controlar la integración de \texttt{SQLAlchemy} en una o más aplicaciones \texttt{Flask}. Dependiendo de cómo inicialice el objeto, se puede usar de inmediato o se adjuntará según sea necesario a una aplicación \texttt{Flask}.
+            
+            \textbf{Hay dos modos de uso que funcionan de manera muy similar}.
+            
+            \begin{figure}[H]
+            	\begin{minipage}[b]{0.45\textwidth}
+            		La \textit{primera} es vincular la instancia a una aplicación \texttt{Flask} muy específica:
+            		\lstset{inputencoding=utf8/latin1,
+            			frame=lines,
+            			label={lst:code_direct},
+            			basicstyle=\footnotesize,
+            			showstringspaces=false
+            		}
+            		\lstinputlisting[language=Python,
+            		firstline=1,
+            		lastline=2]{../python/07-API-Reference.py}
+            		\vspace{1.5cm}
+            	\end{minipage}
+            	\hfill
+            	\begin{minipage}[b]{0.45\textwidth}
+            		La \textit{segunda} posibilidad es crear el objeto una vez y configurar la aplicación más tarde para admitirlo:
+            		\lstset{inputencoding=utf8/latin1,
+            			frame=lines,
+            			label={lst:code_direct},
+            			basicstyle=\footnotesize,
+            			showstringspaces=false  
+            		}
+            		\lstinputlisting[language=Python,
+            		firstline=4,
+            		lastline=9]{../python/07-API-Reference.py}
+            	\end{minipage}
+            \end{figure}
+            
+%            \vspace*{-0.25cm}
+            La diferencia entre los dos es que en el \textbf{primer caso} los métodos como \texttt{create\_all()} y \texttt{drop\_all()} funcionarán todo el tiempo, pero en el \textbf{segundo caso} \texttt{flask.Flask.app\_context()} tiene que existir.
+            
+            De forma predeterminada, \texttt{Flask-SQLAlchemy} aplicará algunas configuraciones específicas de backend para mejorar nuetra experiencia con ellos.
+            
+            A partir de \texttt{SQLAlchemy 0.6}, \texttt{SQLAlchemy} probará la biblioteca en busca de compatibilidad nativa con \texttt{Unicode}. Si detecta \texttt{unicode}, dejará que la biblioteca se encargue de eso; de lo contrario, lo hará ella misma. A veces, esta detección puede fallar, en cuyo caso es posible que desee establecer \texttt{use\_native\_unicode} (o la clave de configuración \texttt{SQLALCHEMY\_NATIVE\_UNICODE}) en \texttt{False}. Tenga en cuenta que la clave de configuración anula el valor que le pasa al constructor. El soporte directo para \texttt{use\_native\_unicode} y \texttt{SQLALCHEMY\_NATIVE\_UNICODE} está obsoleto a partir de la \texttt{v2.4} y se eliminará en la \texttt{v3.0}. Podemos usar en su lugar \texttt{engine\_options} y \texttt{SQLALCHEMY\_ENGINE\_OPTIONS} .
+%            
+            Esta clase también nos proporcionará acceso a todas las funciones y clases de \texttt{SQLAlchemy} desde los módulos \texttt{sqlalchemy} y \texttt{sqlalchemy.orm}. Entonces podemos declarar modelos como este:
+            
+            \lstinputlisting[language=Python,firstline=11,lastline=13]{../python/07-API-Reference.py}
+            
+            Aún podemos usar directamente \texttt{sqlalchemy} y \texttt{sqlalchemy.orm}, pero tengamos en cuenta que las personalizaciones de \texttt{Flask-SQLAlchemy} están disponibles solo a través de una instancia de esta clase \texttt{SQLAlchemy}. Las clases de consulta por default a \texttt{BaseQuery} para \texttt{db.Query} , \texttt{db.Model.query\_class} y la clase de consulta predeterminada \texttt{query\_class} para \texttt{db.relationship} y \texttt{db.backref}. Si utiliza estas interfaces a través \texttt{sqlalchemy} y \texttt{sqlalchemy.orm} directamente, la clase de consulta predeterminada será la de \texttt{sqlalchemy}.
+        
+        \end{minipage}
+    
+    }
+
+\end{document}
