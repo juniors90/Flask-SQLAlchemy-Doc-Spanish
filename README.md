@@ -1,6 +1,6 @@
 # Flask-SQLAlchemy-Doc-Spanish
 
-## Esta es la documentación de Flask-SQLAlchemy en español. Basada en la documentacín oficial de ```Flask-SQLAlchemy```
+## Esta es la documentación de Flask-SQLAlchemy en español. Basada en la documentación oficial de ```Flask-SQLAlchemy```
 
 En estas semanas estuve estudiando este módulo que sirve para manejar base de datos *sql* en *Flask*. En cada carpeta existe un documento un pdf:
 
