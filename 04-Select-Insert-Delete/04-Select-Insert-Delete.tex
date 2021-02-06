@@ -1,8 +1,3 @@
-%%
-%% This is file `Thesis.cls', based on 'ECSthesis.cls', by Steve R. Gunn
-%% generated with the docstrip utility.
-%%
-%% Created by Steve R. Gunn, modified by Sunil Patel: www.sunilpatel.co.uk
 \documentclass[11pt,letterpaper,notumble]{leaflet}
 \input{../00-base/00-base} % Experiment 1
 
@@ -15,8 +10,6 @@
 \AddToBackground{1}{% Fondo de la página pequeña 1
 	\put(\LenToUnit{0.75\paperwidth},\LenToUnit{0.95\paperheight}){\includegraphics[width=\LenToUnit{0.90\paperwidth},height=\LenToUnit{0.1\paperheight},angle=270]{../img/flask-sqlalchemy-title.png}}
 }
-
-
 
 \begin{document}
 	\mbox{}
@@ -105,11 +98,11 @@
     Insertar datos en la base de datos es un proceso de tres pasos:
     
     \begin{enumerate}
-    	\item Crea el objeto \texttt{Python}.
+    	\item Creamos el objeto \texttt{Python}.
     	
-    	\item Agrégalo a la sesión.
+    	\item Agregamos a la sesión.
     	
-    	\item Comprometer la sesión.
+    	\item Realizamos un \textit{commit} del objeto en la sesión.
     \end{enumerate}
     
     La sesión aquí no es la sesión de \texttt{Flask}, sino la de \texttt{Flask-SQLAlchemy}. Es esencialmente una versión reforzada de una transacción de base de datos. Así es como funciona:
